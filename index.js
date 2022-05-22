@@ -34,23 +34,6 @@ async function run() {
             res.send(result);
         });
 
-        //Update Product
-
-        app.put('/products/:id', async (req, res) => {
-            const id = req.params.id;
-            const updateUser = req.body;
-            const filter = { _id: ObjectId(id) };
-            const options = { upsert: true };
-            const updateDoc = {
-                $set: {
-                    minimumOrderQuantity: updateUser.quantity
-                }
-            };
-
-            const result = await userCollection.updateOne(filter, updateDoc, options);
-            res.send(result);
-        })
-
 
     } finally {
 

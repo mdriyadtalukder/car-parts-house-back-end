@@ -16,6 +16,8 @@ async function run() {
     try {
         await client.connect();
         const userCollection = client.db("carparts").collection("products");
+
+        //Get Products
         app.get('/products', async (req, res) => {
             const query = {};
             const cursor = userCollection.find(query);
@@ -23,14 +25,31 @@ async function run() {
             res.send(products);
         });
 
-        //Get Users By Id
-        
+        //Get Product By Id
+
         app.get('/products/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await userCollection.findOne(query);
             res.send(result);
         });
+
+        //Update Product
+
+        app.put('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateUser = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    minimumOrderQuantity: updateUser.quantity
+                }
+            };
+
+            const result = await userCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        })
 
 
     } finally {

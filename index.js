@@ -30,18 +30,18 @@ async function run() {
 
         });
 
-        app.put('/user/:email' ,async (req,res)=>{
-            const email=req.params.email;
-            const user=req.body;
-            const filter={email:email};
-            const options={upsert:true};
+        app.put('/user/:email', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
             const updateDoc = {
                 $set: user,
             };
-            
-            const result=await usersCollection.updateOne(filter,updateDoc,options);
-            const token=jwt.sign({email:email},process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '30d' })
-            res.send(result,token);
+
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            const token = jwt.sign({ email: email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30d' })
+            res.send(result, token);
 
         })
 

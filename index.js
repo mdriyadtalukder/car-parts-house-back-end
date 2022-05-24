@@ -18,6 +18,7 @@ async function run() {
         const userCollection = client.db("carparts").collection("products");
         const orderCollection = client.db("carparts").collection("orders");
         const reviewCollection = client.db("carparts").collection("reviews");
+        const usersCollection = client.db("carparts").collection("users");
 
         //Get Products
         app.get('/products', async (req, res) => {
@@ -26,6 +27,20 @@ async function run() {
             const products = await cursor.toArray();
             res.send(products);
         });
+
+        app.put('/user/:email' ,async (req,res)=>{
+            const email=req.params.email;
+            const user=req.body;
+            const filter={email:email};
+            const options={upsert:true};
+            const updateDoc = {
+                $set: user,
+            };
+            const result=await usersCollection.updateOne(filter,updateDoc,options);
+            res.send(result);
+
+        })
+
         app.get('/reviews', async (req, res) => {
             const query = {};
             const cursor = reviewCollection.find(query);

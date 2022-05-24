@@ -27,7 +27,7 @@ async function run() {
             const cursor = userCollection.find(query);
             const products = await cursor.toArray();
             res.send(products);
-            
+
         });
 
         app.put('/user/:email' ,async (req,res)=>{
@@ -38,6 +38,7 @@ async function run() {
             const updateDoc = {
                 $set: user,
             };
+            
             const result=await usersCollection.updateOne(filter,updateDoc,options);
             const token=jwt.sign({email:email},process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '30d' })
             res.send(result,token);

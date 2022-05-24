@@ -33,6 +33,14 @@ async function run() {
             res.send(products);
         });
 
+        app.post('/reviews', async (req, res) => {
+            const newUser = req.body;
+            console.log(newUser);
+            const result = await reviewCollection.insertOne(newUser);
+            res.send(result);
+
+        });
+
         //Get Product By Id
 
         app.get('/products/:id', async (req, res) => {

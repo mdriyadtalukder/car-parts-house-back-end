@@ -34,6 +34,9 @@ async function run() {
             const result = await userCollection.findOne(query);
             res.send(result);
         });
+
+         // Add Orders
+         
         app.post('/orders', async (req, res) => {
             const newOrder = req.body;
             console.log(newOrder);

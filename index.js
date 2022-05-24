@@ -35,6 +35,13 @@ async function run() {
             res.send(result);
         });
 
+        app.get('/order', async (req, res) => {
+            const query = {};
+            const cursor = orderCollection.find(query);
+            const products = await cursor.toArray();
+            res.send(products);
+        });
+
         // Add Orders
 
         app.post('/order', async (req, res) => {

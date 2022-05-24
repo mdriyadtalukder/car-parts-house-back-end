@@ -27,6 +27,7 @@ async function run() {
             const cursor = userCollection.find(query);
             const products = await cursor.toArray();
             res.send(products);
+            
         });
 
         app.put('/user/:email' ,async (req,res)=>{

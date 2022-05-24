@@ -35,11 +35,11 @@ async function run() {
             res.send(result);
         });
 
-         // Add Orders
-         
-        app.post('/orders', async (req, res) => {
-            const newOrder = req.body;
-            console.log(newOrder);
+        // Add Orders
+
+        app.post('/order', async (req, res) => {
+            const newUser = req.body;
+            console.log(newUser);
             const result = await orderCollection.insertOne(newUser);
             res.send(result);
 

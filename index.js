@@ -3,7 +3,7 @@ var cors = require('cors');
 const app = express();
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-const { MongoClient, ServerApiVersion,ObjectId } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const port = process.env.PORT || 5000
 
@@ -40,6 +40,16 @@ async function run() {
         const orderCollection = client.db("carparts").collection("orders");
         const reviewCollection = client.db("carparts").collection("reviews");
         const usersCollection = client.db("carparts").collection("users");
+        const myCollection = client.db("carparts").collection("myprofile");
+
+
+        app.post('/myprofile', async (req, res) => {
+            const newUser = req.body;
+            console.log(newUser);
+            const result = await userCollection.insertOne(newUser);
+            res.send(result);
+
+        });
 
         //Get Products
         app.get('/products', async (req, res) => {
@@ -77,6 +87,13 @@ async function run() {
         app.get('/user', verifyJWT, async (req, res) => {
             const users = await usersCollection.find().toArray();
             res.send(users);
+
+        });
+        app.post('/products', async (req, res) => {
+            const newUser = req.body;
+            console.log(newUser);
+            const result = await userCollection.insertOne(newUser);
+            res.send(result);
 
         });
         app.get('/admin/:email', async (req, res) => {

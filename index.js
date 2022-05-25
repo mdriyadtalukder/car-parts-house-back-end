@@ -132,6 +132,7 @@ async function run() {
             res.send({ clientSecret: paymentIntent.client_secret })
         });
 
+        
         app.get('/reviews', async (req, res) => {
             const query = {};
             const cursor = reviewCollection.find(query);
@@ -179,7 +180,7 @@ async function run() {
             }
         });
 
-        app.get('/myorder/:id',async (req, res) => {
+        app.get('/myorder/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const order = await orderCollection.findOne(query);

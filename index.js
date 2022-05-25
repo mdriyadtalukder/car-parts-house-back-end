@@ -53,7 +53,7 @@ async function run() {
 
         });
 
-        app.post('/allproducts', verifyJWT, async (req, res) => {
+        app.post('/products', verifyJWT, async (req, res) => {
             const newUser = req.body;
             console.log(newUser);
             const result = await userCollection.insertOne(newUser);

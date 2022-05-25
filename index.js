@@ -70,6 +70,18 @@ async function run() {
             res.send(result);
         });
 
+        app.post('/create-payment-intent', async (req, res) => {
+            const service = req.body;
+            const price = service.price;
+            const amount = price * 100;
+            const paymentIntent = await stripe.paymentIntents.create({
+                amount: amount,
+                currency: 'usd',
+                payment_method_types: ['card']
+            });
+            res.send({ clientSecret: paymentIntent.client_secret })
+        });
+
         app.get('/user', verifyJWT, async (req, res) => {
             const users = await usersCollection.find().toArray();
             res.send(users);
@@ -120,19 +132,8 @@ async function run() {
 
         })
 
-        app.post('/create-payment-intent', async (req, res) => {
-            const service = req.body;
-            const price = service.price;
-            const amount = price * 100;
-            const paymentIntent = await stripe.paymentIntents.create({
-                amount: amount,
-                currency: 'usd',
-                payment_method_types: ['card']
-            });
-            res.send({ clientSecret: paymentIntent.client_secret })
-        });
 
-        
+
         app.get('/reviews', async (req, res) => {
             const query = {};
             const cursor = reviewCollection.find(query);

@@ -165,7 +165,7 @@ async function run() {
             }
         });
 
-        app.get('/myorder/:id', verifyJWT, async (req, res) => {
+        app.get('/myorder/:id',  async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const order = await orderCollection.findOne(query);

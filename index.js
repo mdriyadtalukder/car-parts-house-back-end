@@ -46,13 +46,14 @@ async function run() {
         app.post('/myprofile', async (req, res) => {
             const newUser = req.body;
             console.log(newUser);
-            const result = await userCollection.insertOne(newUser);
+            const result = await myCollection.insertOne(newUser);
             res.send(result);
 
         });
 
         //Get Products
         app.get('/products', async (req, res) => {
+            
             const query = {};
             const cursor = userCollection.find(query);
             const products = await cursor.toArray();

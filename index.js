@@ -120,18 +120,17 @@ async function run() {
 
         })
 
-        app.post("/create-payment-intent", async (req, res) => {
-            
-            const service=req.post;
-            const price=service.price;
-            const amount=price*100;
-            const paymentIntent=await stripe.paymentIntent.create({
-                amount:amount,
-                currency:'usd',
-                payment_method_types:['card']
+        app.post('/create-payment-intent', verifyJWT, async(req, res) =>{
+            const service = req.body;
+            const price = service.price;
+            const amount = price*100;
+            const paymentIntent = await stripe.paymentIntents.create({
+              amount : amount,
+              currency: 'usd',
+              payment_method_types:['card']
             });
             res.send({clientSecret: paymentIntent.client_secret})
-            });
+          });
 
         app.get('/reviews', async (req, res) => {
             const query = {};

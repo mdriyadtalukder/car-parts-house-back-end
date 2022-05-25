@@ -2,12 +2,17 @@ const express = require('express');
 var cors = require('cors');
 const app = express();
 const jwt = require('jsonwebtoken');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 require('dotenv').config();
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const ObjectId = require('mongodb').ObjectId;
 const port = process.env.PORT || 5000
 
-app.use(cors());
+const corsConfig = {
+    origin: true,
+    credentials: true,
+};
+app.use(cors(corsConfig));
+app.options("*", cors(corsConfig));
 app.use(express.json());
 
 function verifyJWT(req, res, next) {
@@ -180,6 +185,7 @@ async function run() {
 
         app.post('/create-payment-intent', async (req, res) => {
             const service = req.body;
+            console.log(service)
             const price = service.price;
             const amount = price * 100;
             const paymentIntent = await stripe.paymentIntents.create({
@@ -187,6 +193,7 @@ async function run() {
                 currency: 'usd',
                 payment_method_types: ['card']
             });
+            console.log(paymentIntent.client_secret)
             res.send({ clientSecret: paymentIntent.client_secret })
         });
         // Add Orders

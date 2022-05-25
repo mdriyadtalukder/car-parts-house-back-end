@@ -85,6 +85,7 @@ async function run() {
             const options = { upsert: true };
             const updateDoc = {
                 $set: user,
+
             };
 
             const result = await usersCollection.updateOne(filter, updateDoc, options);

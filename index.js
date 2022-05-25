@@ -52,13 +52,21 @@ async function run() {
 
         app.put('/user/admin/:email', async (req, res) => {
             const email = req.params.email;
-            const filter = { email: email };
-            const updateDoc = {
-                $set: { role: 'admin' },
-            };
+            const requester = req.decoded.email;
+            const requesterAccount = await usersCollection.findOne({ email: requester });
+            if (requesterAccount.role === 'admin') {
+                const filter = { email: email };
+                const updateDoc = {
+                    $set: { role: 'admin' },
+                };
 
-            const result = await usersCollection.updateOne(filter, updateDoc);
-            res.send(result);
+                const result = await usersCollection.updateOne(filter, updateDoc);
+                res.send(result);
+            }
+            else{
+                res.status(403).send({ message: 'Forbidden'});
+            }
+
 
         })
 

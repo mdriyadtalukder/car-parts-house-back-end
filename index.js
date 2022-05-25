@@ -123,6 +123,7 @@ async function run() {
             const cursor = orderCollection.find(query);
             const products = await cursor.toArray();
             res.send(products);
+
         });
 
 

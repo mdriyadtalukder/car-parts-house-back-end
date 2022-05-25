@@ -53,6 +53,14 @@ async function run() {
 
         });
 
+        app.post('/allproducts', verifyJWT, async (req, res) => {
+            const newUser = req.body;
+            console.log(newUser);
+            const result = await userCollection.insertOne(newUser);
+            res.send(result);
+
+        });
+
         app.delete('/allproducts/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };

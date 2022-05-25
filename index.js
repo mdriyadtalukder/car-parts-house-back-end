@@ -3,8 +3,8 @@ var cors = require('cors');
 const app = express();
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+const { MongoClient, ServerApiVersion,ObjectId } = require('mongodb');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const ObjectId = require('mongodb').ObjectId;
 const port = process.env.PORT || 5000
 
 const corsConfig = {
@@ -31,8 +31,6 @@ function verifyJWT(req, res, next) {
 
 }
 
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.9ctdj.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 async function run() {

@@ -243,7 +243,7 @@ async function run() {
             }
             const result = await payCollection.insertOne(payment);
             const updateOrder = await orderCollection.updateOne(filter, updatedDoc);
-            res.send({updateOrder,result});
+            res.send(updatedDoc);
 
         })
 

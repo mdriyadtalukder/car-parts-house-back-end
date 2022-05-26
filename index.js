@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000
 const corsConfig = {
     origin: '*',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE']
+    methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE']
 }
 app.use(cors(corsConfig))
 app.options("*", cors(corsConfig))
@@ -241,45 +241,21 @@ async function run() {
 
 
 
-        // app.patch('/myorder/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const payment = req.body;
-        //     const filter = { _id: ObjectId(id) };
-        //     const updatedDoc = {
-        //         $set: {
-        //             paid: true,
-        //             transactionId: payment.transactionId
-        //         }
-        //     }
-        //     const result = await payCollection.insertOne(payment);
-        //     const updateOrder = await orderCollection.updateOne(filter, updatedDoc);
-        //     res.send(updatedDoc);
-
-        // })
-
-
-        app.put('myorder/:id', async (req, res) => {
+        app.patch('/myorder/:id', async (req, res) => {
             const id = req.params.id;
-            const user = req.body;
+            const payment = req.body;
             const filter = { _id: ObjectId(id) };
-            const options = { upsert: true };
             const updatedDoc = {
                 $set: {
                     paid: true,
-                    transactionId: user.transactionId
+                    transactionId: payment.transactionId
                 }
             }
+            const result = await payCollection.insertOne(payment);
+            const updateOrder = await orderCollection.updateOne(filter, updatedDoc);
+            res.send(updatedDoc);
 
-            const result = await orderCollection.updateOne(filter, updatedDoc, options);
-            res.send(result);
-
-        });
-
-
-
-
-
-
+        })
 
 
         app.post('/create-payment-intent', async (req, res) => {

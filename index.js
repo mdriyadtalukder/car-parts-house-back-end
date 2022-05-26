@@ -105,6 +105,8 @@ async function run() {
             const result = await userCollection.insertOne(newUser);
             res.send(result);
 
+
+            
         });
 
 

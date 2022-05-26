@@ -42,7 +42,11 @@ async function run() {
         const usersCollection = client.db("carparts").collection("users");
         const myCollection = client.db("carparts").collection("myprofile");
 
+        app.get('/myprofile',  async (req, res) => {
+            const users = await usersCollection.find().toArray();
+            res.send(users);
 
+        });
         app.put('/myprofile/:id', async (req, res) => {
             const email = req.params.email;
             const user = req.body;

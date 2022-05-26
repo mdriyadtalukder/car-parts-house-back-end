@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000
 const corsConfig = {
     origin: '*',
     credentials: true,
-    methods: ['GET', 'POST', 'PUT','PATCH', 'DELETE']
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
 }
 app.use(cors(corsConfig))
 app.options("*", cors(corsConfig))
@@ -209,6 +209,14 @@ async function run() {
             res.send(products);
 
         });
+        app.delete('/order/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await orderCollection.deleteOne(query);
+            res.send(result);
+        });
+
+        
 
 
         app.get('/myorder', verifyJWT, async (req, res) => {
@@ -231,14 +239,6 @@ async function run() {
             const order = await orderCollection.findOne(query);
             res.send(order);
         })
-
-
-
-
-
-
-
-
 
 
         app.patch('/myorder/:id', async (req, res) => {

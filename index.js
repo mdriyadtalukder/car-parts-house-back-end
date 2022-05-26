@@ -231,21 +231,56 @@ async function run() {
             const order = await orderCollection.findOne(query);
             res.send(order);
         })
-        app.patch('/myorder/:id', async (req, res) => {
+
+
+
+
+
+
+
+
+
+
+        // app.patch('/myorder/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const payment = req.body;
+        //     const filter = { _id: ObjectId(id) };
+        //     const updatedDoc = {
+        //         $set: {
+        //             paid: true,
+        //             transactionId: payment.transactionId
+        //         }
+        //     }
+        //     const result = await payCollection.insertOne(payment);
+        //     const updateOrder = await orderCollection.updateOne(filter, updatedDoc);
+        //     res.send(updatedDoc);
+
+        // })
+
+      
+        app.put('myorder/:id', async (req, res) => {
             const id = req.params.id;
-            const payment = req.body;
-            const filter = { _id: ObjectId(id) };
+            const user = req.body;
+            const filter ={ _id: ObjectId(id) };
+            const options = { upsert: true };
             const updatedDoc = {
                 $set: {
                     paid: true,
                     transactionId: payment.transactionId
                 }
             }
-            const result = await payCollection.insertOne(payment);
-            const updateOrder = await orderCollection.updateOne(filter, updatedDoc);
-            res.send(updatedDoc);
 
-        })
+            const result = await orderCollection.updateOne(filter, updatedDoc, options);
+            res.send(result);
+
+        });
+
+
+
+
+
+
+
 
         app.post('/create-payment-intent', async (req, res) => {
             const service = req.body;

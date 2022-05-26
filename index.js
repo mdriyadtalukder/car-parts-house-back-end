@@ -42,12 +42,19 @@ async function run() {
         const usersCollection = client.db("carparts").collection("users");
         const myCollection = client.db("carparts").collection("myprofile");
 
-        app.get('/myprofile',  async (req, res) => {
+        app.get('/myprofile', async (req, res) => {
             const users = await usersCollection.find().toArray();
             res.send(users);
 
         });
-        app.put('/myprofile/:id', async (req, res) => {
+        app.get('/myprofile/:email', async (req, res) => {
+            const id = req.params.email;
+            console.log(req.body)
+            const query = { email: id };
+            const result = await usersCollection.findOne(query);
+            res.send(result);
+        });
+        app.put('/myprofile/:email', async (req, res) => {
             const email = req.params.email;
             const user = req.body;
             const filter = { email: email };

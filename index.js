@@ -23,7 +23,7 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 function verifyJWT(req, res, next) {
-    
+
     const authHeader = req.headers.authorization;
     if (!authHeader) {
         return res.status(401).send({ message: 'unauthorized access' });
@@ -49,6 +49,7 @@ async function run() {
         const reviewCollection = client.db("carparts").collection("reviews");
         const usersCollection = client.db("carparts").collection("users");
         const myCollection = client.db("carparts").collection("myprofile");
+        const payCollection = client.db("carparts").collection("pay");
 
         app.get('/myprofile', async (req, res) => {
             const users = await usersCollection.find().toArray();
@@ -230,7 +231,21 @@ async function run() {
             const order = await orderCollection.findOne(query);
             res.send(order);
         })
+        app.patch('/myorder/:id', async (req, res) => {
+            const id = req.params.id;
+            const payment = req.body;
+            const filter = { _id: ObjectId(id) };
+            const updatedDoc = {
+                $set: {
+                    paid: true,
+                    transactionId: payment.transactionId
+                }
+            }
+            const result = await payCollection.insertOne(payment);
+            const updateOrder = await orderCollection.updateOne(filter, updatedDoc);
+            res.send(updatedDoc);
 
+        })
 
         app.post('/create-payment-intent', async (req, res) => {
             const service = req.body;

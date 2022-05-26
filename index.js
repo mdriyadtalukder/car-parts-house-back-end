@@ -23,6 +23,7 @@ app.use(function (req, res, next) {
 app.use(express.json());
 
 function verifyJWT(req, res, next) {
+    
     const authHeader = req.headers.authorization;
     if (!authHeader) {
         return res.status(401).send({ message: 'unauthorized access' });
@@ -106,7 +107,7 @@ async function run() {
             res.send(result);
 
 
-            
+
         });
 
 

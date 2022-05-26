@@ -48,8 +48,8 @@ async function run() {
         const orderCollection = client.db("carparts").collection("orders");
         const reviewCollection = client.db("carparts").collection("reviews");
         const usersCollection = client.db("carparts").collection("users");
-        const myCollection = client.db("carparts").collection("myprofile");
         const payCollection = client.db("carparts").collection("pay");
+        const myCollection = client.db("carparts").collection("myprofile");
 
         app.get('/myprofile', async (req, res) => {
             const users = await usersCollection.find().toArray();
@@ -243,7 +243,7 @@ async function run() {
             }
             const result = await payCollection.insertOne(payment);
             const updateOrder = await orderCollection.updateOne(filter, updatedDoc);
-            res.send(updatedDoc);
+            res.send({updateOrder,result});
 
         })
 

@@ -43,17 +43,29 @@ async function run() {
         const myCollection = client.db("carparts").collection("myprofile");
 
 
-        app.post('/myprofile', async (req, res) => {
-            const newUser = req.body;
-            console.log(newUser);
-            const result = await myCollection.insertOne(newUser);
+        app.put('/myprofile/:id', async (req, res) => {
+            const email = req.params.email;
+            const user = req.body;
+            const filter = { email: email };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    education: user.education,
+                    location: user.locations,
+                    phoneNumber: user.phoneNumber,
+                    linkedIn: user.linkedIn,
+                },
+
+            };
+
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
             res.send(result);
 
         });
 
         //Get Products
         app.get('/products', async (req, res) => {
-            
+
             const query = {};
             const cursor = userCollection.find(query);
             const products = await cursor.toArray();
